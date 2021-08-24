@@ -1,18 +1,21 @@
-from typing import List
-from sqlalchemy.orm import Session
-import crud, models, schemas
-from database import SessionLocal, engine
 from datetime import timedelta
-from fastapi import Depends, FastAPI
-from fastapi.security import OAuth2PasswordRequestForm
-from crud import create_access_token
-from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
-from crud import ALGORITHM, SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
-from fastapi.middleware.cors import CORSMiddleware
-import database
+from typing import List
 
+import sys
+sys.path.insert(0, 'API_1')
+
+from fastapi import Depends, HTTPException, status
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordRequestForm
+from jose import JWTError, jwt
+from sqlalchemy.orm import Session
+
+import models, schemas, crud
+from crud import ALGORITHM, SECRET_KEY, ACCESS_TOKEN_EXPIRE_MINUTES
+from crud import create_access_token
+from database import SessionLocal, engine
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -100,7 +103,8 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 
 @app.get("/users/", response_model=List[schemas.User])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), admin: models.User = Depends(get_admin_user)):
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db),
+               admin: models.User = Depends(get_admin_user)):
     """
       Get users informations.
       Access: Only for administrator
@@ -125,6 +129,7 @@ def read_user(user_id: int, db: Session = Depends(get_db), admin: models.User = 
         return db_user
     else:
         raise HTTPException(status_code=403, detail="Operation not permitted")
+
 
 @app.delete("/users/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db), admin: models.User = Depends(get_admin_user)):
@@ -158,9 +163,9 @@ def update_user(user: schemas.UserUpdate, db: Session = Depends(get_db), admin: 
         raise HTTPException(status_code=403, detail="Operation not permitted")
 
 
-
 @app.patch("/users/me", response_model=str)
-def update_my_info(user: schemas.UserUpdate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_active_user)):
+def update_my_info(user: schemas.UserUpdate, db: Session = Depends(get_db),
+                   current_user: models.User = Depends(get_current_active_user)):
     """
     Update informations of my profile.
     Access: Only of the user who's connected
@@ -189,7 +194,8 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
 
 @app.post("/messages", response_model=schemas.Message)
-def create_message(message: schemas.MessageCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_active_user)):
+def create_message(message: schemas.MessageCreate, db: Session = Depends(get_db),
+                   current_user: models.User = Depends(get_current_active_user)):
     """
       POST a message.
       Access: Only of the user who's connected
