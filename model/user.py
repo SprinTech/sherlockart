@@ -1,7 +1,9 @@
 import datetime
 from comment import Comment
 
-from database.user_db import user_crud
+import sys
+sys.path.insert(1, 'API_1')
+from API_1 import crud
 
 class User:
   def __init__(self, username, password):
@@ -14,6 +16,6 @@ class User:
 
   def create_new_comment(text,id_user):
       new_comment = Comment(text,id_user)
-      user_crud.create_comment(new_comment)
+      crud.create_comment(new_comment)
     
 

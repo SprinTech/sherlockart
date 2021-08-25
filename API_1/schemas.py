@@ -23,15 +23,14 @@ class UserBase(BaseModel):
 
 
 class UserCreate(UserBase):
-    role: Role = Role.user
     username: str
     password: str
 
 
-class UserUpdate(UserBase):
-    password: str
-    new_username: str
-    id: int
+# class UserUpdate(UserBase):
+#     password: str
+#     new_username: str
+#     id: int
 
 
 class User(UserBase):
@@ -47,11 +46,11 @@ class UserInDB(User):
     hashed_password: str
 
 
-class MessageBase(BaseModel):
+class CommentBase(BaseModel):
     pass
 
 
-class Message(MessageBase):
+class Comment(CommentBase):
     id: int
     date: datetime
     description: str
@@ -61,5 +60,5 @@ class Message(MessageBase):
         orm_mode = True
 
 
-class MessageCreate(MessageBase):
+class CommentCreate(CommentBase):
     description: str

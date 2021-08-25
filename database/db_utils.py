@@ -1,9 +1,7 @@
 import mysql.connector
 from sqlalchemy import create_engine
-import sys
-sys.path.insert(0,'/home/apprenant/vscode_projects/sherlock-art')
 
-from conf.conf_connect import mysql_user, mysql_host, mysql_password,user_database_name
+from conf.conf_connect import mysql_user, mysql_host, mysql_password
 
 
 # METHODS TO ACCESS AND WORK WITH MYSQL
