@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 
 def main():
@@ -59,6 +60,7 @@ def main():
             if create == "Oui":
                 new_user = st.text_input("Nom d'utilisateur")
                 new_password = st.text_input("Mot de passe", type='password')
+                res = requests.post('', data={"username": new_user, "password": new_password})
                 if st.button("S'inscrire"):
                     # ajouter le code pour l'insertion en base et si code retour ok alors :
                     st.success(
