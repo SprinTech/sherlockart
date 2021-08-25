@@ -41,6 +41,8 @@ def main():
             password = st.text_input("Mot de passe", type='password')
 
             # Check if user exist in database
+            res = requests.get('http://127.0.0.1:8000/users/')
+            print(res)
             if st.button("Se connecter"):
                 if username != 'ffffff' or password != "ffffff":  # à remplacer par les code et user récupérés de la base
                     st.write(" - User inconnu - ")
@@ -60,11 +62,13 @@ def main():
             if create == "Oui":
                 new_user = st.text_input("Nom d'utilisateur")
                 new_password = st.text_input("Mot de passe", type='password')
-                res = requests.post('', data={"username": new_user, "password": new_password})
                 if st.button("S'inscrire"):
                     # ajouter le code pour l'insertion en base et si code retour ok alors :
                     st.success(
                         "Votre compte a correctement été créé. Veuillez vous connecter pour laisser votre commentaire")
+
+                    res = requests.post('http://127.0.0.1:8000/users/',
+                                        params={"role": 'user', "username": new_user, "password": new_password})
 
 
 if __name__ == '__main__':

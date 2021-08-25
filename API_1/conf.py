@@ -1,0 +1,5 @@
+mysql_host = "localhost"
+mysql_user = "root"
+mysql_password = "simplon"
+user_database_name = "BddUser"
+# art_database_name = "BddArt"
