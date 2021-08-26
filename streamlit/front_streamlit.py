@@ -1,5 +1,6 @@
 import streamlit as st
 import requests
+import json
 
 
 def main():
@@ -41,11 +42,12 @@ def main():
             password = st.text_input("Mot de passe", type='password')
 
             # Check if user exist in database
-            res = requests.get('http://127.0.0.1:8000/users/')
-            print(res)
             if st.button("Se connecter"):
-                if username != 'ffffff' or password != "ffffff":  # à remplacer par les code et user récupérés de la base
-                    st.write(" - User inconnu - ")
+                # requête à modifier pour soumettre le nom et le mot de passe
+                r = requests.get(f'http://127.0.0.1:8000/user/{username}')
+
+                if r.status_code == 403:
+                    st.write("Nom d'utilisateur non reconnu")
                 else:
                     st.success("Bonjour {}".format(username))
                     placeholder = st.empty()
@@ -53,22 +55,26 @@ def main():
 
                     if st.button("Envoyer"):
                         # ajouter le code pour l'insertion du commentaire dans la base et si ok :
+                        r = requests.post('http://127.0.0.1:8000/comments/')
+                        st.write(r.status_code)
                         st.success("Votre commentaire a bien été enregistré")
 
                         placeholder.empty()  # pour réinitialiser le champ commentaire
 
         if task == "Je n'ai pas de compte":
             create = st.selectbox(" Voulez-vous créer un compte ? ", ["Oui", "Non"])
+
             if create == "Oui":
                 new_user = st.text_input("Nom d'utilisateur")
                 new_password = st.text_input("Mot de passe", type='password')
+
                 if st.button("S'inscrire"):
-                    # ajouter le code pour l'insertion en base et si code retour ok alors :
+                    # /!\ Make json.dumps everytime otherwise you couldn't submit information to database
+                    requests.post('http://127.0.0.1:8000/user/',
+                                  data=json.dumps({"username": new_user, "password": new_password}))
+
                     st.success(
                         "Votre compte a correctement été créé. Veuillez vous connecter pour laisser votre commentaire")
-
-                    res = requests.post('http://127.0.0.1:8000/users/',
-                                        params={"role": 'user', "username": new_user, "password": new_password})
 
 
 if __name__ == '__main__':
