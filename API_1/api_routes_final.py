@@ -30,15 +30,15 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
     :return user account information
     """
-    db_user = crud.get_user_by_username(db, username=user.username)
+    db_user = crud.get_user_by_username(db, username=user.username, password=user.password)
     if db_user:
         raise HTTPException(status_code=400, detail="User already registered")
     return crud.create_user(db=db, user=user)
 
 
 # requête à modifier
-@app.get("/user/{username}")
-def read_user(username: str, db: Session = Depends(get_db)):
+@app.get("/user/")
+def read_user(username: str, password: str, db: Session = Depends(get_db)):
     """
     Get users informations by user_id
     Access: Only for administrator
@@ -48,7 +48,7 @@ def read_user(username: str, db: Session = Depends(get_db)):
     :return information about user specified
 
     """
-    db_user = crud.get_user_by_username(db, username=username)
+    db_user = crud.get_user_by_username(db, username=username, password=password)
     if db_user:
         return db_user
     else:
@@ -56,7 +56,7 @@ def read_user(username: str, db: Session = Depends(get_db)):
 
 
 @app.post("/comments/")
-def create_comment(comment: schemas.CommentCreate, db: Session = Depends(get_db)):
+def create_comment(comment: schemas.CommentCreate, user_id: int, db : Session = Depends(get_db)):
     """
     Post a comment.
     Access: Only of the user who's connected
@@ -65,4 +65,4 @@ def create_comment(comment: schemas.CommentCreate, db: Session = Depends(get_db)
 
     :return
     """
-    return crud.create_comment(db, comment)
+    return crud.create_comment(db, comment, user_id)

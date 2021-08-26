@@ -11,8 +11,9 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 
-def get_user_by_username(db: Session, username: str):
-    return db.query(models.User).filter(models.User.username == username).first()
+def get_user_by_username(db: Session, username: str, password: str):
+    return db.query(models.User).filter(models.User.username == username,
+                                        models.User.hashed_password == password).first()
 
 
 def get_users(db: Session, skip: int = 0, limit: int = 100):
@@ -51,12 +52,11 @@ def authenticate_user(db, username: str, password: str):
     return user
 
 
-def create_comment(db: Session, comment: schemas.CommentCreate, user_id: int):
-    db_comment = models.Comment(description=comment.description, user_id=user_id)
+def create_comment(db: Session, comment: schemas.CommentCreate, id_user: int):
+    db_comment = models.Comment(content=comment.content, id_user=id_user)
     db.add(db_comment)
     db.commit()
     db.refresh(db_comment)
-    print(db_comment)
     return db_comment
 
 
