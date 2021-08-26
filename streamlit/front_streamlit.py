@@ -1,6 +1,49 @@
 import streamlit as st
 import requests
 import json
+from PIL import Image
+
+import numpy as np
+from keras import preprocessing, models
+
+
+def preprocess_image(path):
+    '''
+    Preparing an image to give it to the computer vision model
+    '''
+    test_image = preprocessing.image.load_img(path, target_size=(224, 224))
+    test_image = preprocessing.image.img_to_array(test_image)
+    test_image /= 255.
+    test_image = np.expand_dims(test_image, axis=0)
+    return test_image
+
+
+def get_prediction_from_path(path):
+    '''
+    Given the path of a picture,
+    the model (loaded from a .h5 file)
+    will return a prediction of its current
+    '''
+
+    # Load the model with keras
+    model = models.load_model('/home/apprenant/PycharmProjects/sherlockart/API_1/models/my_model.h5')
+
+    # We need labels
+    labels = {0: 'Abstract Expressionism', 1: 'Baroque', 2: 'Byzantine Art', 3: 'Cubism', 4: 'Early Renaissance',
+              5: 'Expressionism', 6: 'High Renaissance', 7: 'Impressionism', 8: 'Mannerism', 9: 'Neoplasticism',
+              10: 'Northern Renaissance', 11: 'Pop Art', 12: 'Post-Impressionism', 13: 'Primitivism',
+              14: 'Proto Renaissance', 15: 'Realism', 16: 'Romanticism', 17: 'Suprematism', 18: 'Surrealism',
+              19: 'Symbolism'}
+
+    # Preprocessing the image
+    test_image = preprocess_image(path)
+
+    # Get prediction
+    prediction = model.predict(test_image)
+    prediction_probability = np.amax(prediction)
+    prediction_idx = np.argmax(prediction)
+
+    return labels[prediction_idx].replace('_', ' ')
 
 
 def main():
@@ -12,8 +55,12 @@ def main():
 
     # Add try except to prevent error when file is not uploaded
     try:
-        uploaded_file = st.file_uploader("Choisissez un fichier", type=['png', 'jpg'])
-        st.image(uploaded_file)
+        uploaded_file = st.file_uploader("Choisissez un fichier", type=['png', 'jpg', 'jpeg'])
+        st.image(uploaded_file, width=600)
+        img = Image.open(uploaded_file)
+        path = 'streamlit/img/uploaded_image.png'
+        img.save(path)
+
     except:
         pass
 
@@ -21,7 +68,9 @@ def main():
     st.subheader("2. Les informations sur l'oeuvre :art:")
     st.markdown('  ')
 
-    st.write("- **Courant artistique** :")
+    pred_current = get_prediction_from_path(path)
+
+    st.write("- **Courant artistique** :", pred_current )
     st.write("- **Description du courant** :")
     st.write("- **Période historique** :")
     st.write("- **Artistes influents** :")
@@ -44,7 +93,7 @@ def main():
             # Check if user exist in database
             if st.button("Se connecter"):
                 # requête à modifier pour soumettre le nom et le mot de passe
-                r = requests.get(f'http://127.0.0.1:8000/user/{username}')
+                r = requests.get(f'http://127.0.0.1:8000/user/?username={username}&password={password}')
 
                 if r.status_code == 403:
                     st.write("Nom d'utilisateur non reconnu")
