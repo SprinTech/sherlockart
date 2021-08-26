@@ -32,36 +32,12 @@ def create_user(db: Session, user: schemas.UserCreate):
     return db_user
 
 
-# def delete_user(db: Session, db_user:models.User):
-#     db.delete(db_user)
-#     db.commit()
-#     return "Successfully deleted"
-
-
-# def update_user(db : Session, db_user : models.User, new_username : str):
-#     db_user.username = new_username
-#     db.commit()
-#     db.refresh(db_user)
-#     return "Successfully updated!"
-
-
-# def update_user_self(db: Session, current_user: schemas.User, user_update: schemas.UserUpdate):
-#     db_user = get_user(db, current_user.id)
-#     db_user.username = user_update.new_username
-#     db_user.hashed_password = pwd_context.hash(user_update.password)
-#     db.commit()
-#     db.refresh(db_user)
-#     return db_user
-
-
 def verify_password(plain_password, hashed_password):
-    # return pwd_context.verify(plain_password, hashed_password)
-    return True
+    return pwd_context.verify(plain_password, hashed_password)
 
 
 def get_password_hash(password):
-    # return pwd_context.hash(password)
-    return password
+    return pwd_context.hash(password)
 
 
 def get_user(db, user_id: int):
@@ -101,10 +77,12 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 def get_all_comment(db: Session, skip: int = 0, limit: int = 100):
     """
-    get the list of all the comment in db
+    Get the list of all the comment in db
+
     :param db: session
     :param skip:
     :param limit: len max of the list
+
     :return: a list of comments
     """
     return db.query(models.Comment).offset(skip).limit(limit).all()

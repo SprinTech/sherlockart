@@ -27,12 +27,6 @@ class UserCreate(UserBase):
     password: str
 
 
-# class UserUpdate(UserBase):
-#     password: str
-#     new_username: str
-#     id: int
-
-
 class User(UserBase):
     id: int
     username: str
