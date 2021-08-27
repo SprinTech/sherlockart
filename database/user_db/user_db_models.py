@@ -31,7 +31,7 @@ class Comment(Base):
     __tablename__ = "comment"
 
     id_comment = Column(Integer, primary_key=True, index=True)
-    content = Column(String(25), unique=False, index=True)
+    content = Column(String(255), unique=False, index=True)
     creation_date = Column(DateTime, unique=False, index=True)
     modification_date = Column(DateTime, unique=False, index=True)
     deleted_date = Column(DateTime, unique=False, index=True)
