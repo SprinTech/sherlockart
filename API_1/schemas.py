@@ -27,12 +27,6 @@ class UserCreate(UserBase):
     password: str
 
 
-# class UserUpdate(UserBase):
-#     password: str
-#     new_username: str
-#     id: int
-
-
 class User(UserBase):
     id: int
     username: str
@@ -53,12 +47,12 @@ class CommentBase(BaseModel):
 class Comment(CommentBase):
     id: int
     date: datetime
-    description: str
-    user_id: int
+    content: str
+    id_user: int
 
     class Config:
         orm_mode = True
 
 
 class CommentCreate(CommentBase):
-    description: str
+    content: str
