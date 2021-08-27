@@ -35,7 +35,7 @@ def init_db(event_loop, session_make):
 
     populate_table = """
     INSERT INTO customer(name,firstname, information)
-    VALUES("de smedt","marie", "test")
+    VALUES("de smedt","marie", "tests")
     """
     db_cursor.execute(populate_table)
     session_make.commit()
