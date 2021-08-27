@@ -8,9 +8,9 @@ from keras import preprocessing, models
 
 
 def preprocess_image(path):
-    '''
+    """
     Preparing an image to give it to the computer vision model
-    '''
+    """
     test_image = preprocessing.image.load_img(path, target_size=(224, 224))
     test_image = preprocessing.image.img_to_array(test_image)
     test_image /= 255.
@@ -19,11 +19,11 @@ def preprocess_image(path):
 
 
 def get_prediction_from_path(path):
-    '''
+    """
     Given the path of a picture,
     the model (loaded from a .h5 file)
     will return a prediction of its current
-    '''
+    """
 
     # Load the model with keras
     model = models.load_model('/home/apprenant/PycharmProjects/sherlockart/API_1/models/my_model.h5')
@@ -67,10 +67,9 @@ def main():
     ####### ---- INFORMATIONS ABOUT PAINTING ---- ######
     st.subheader("2. Les informations sur l'oeuvre :art:")
     st.markdown('  ')
-
     pred_current = get_prediction_from_path(path)
 
-    st.write("- **Courant artistique** :", pred_current )
+    st.write("- **Courant artistique** :", pred_current)
     st.write("- **Description du courant** :")
     st.write("- **Période historique** :")
     st.write("- **Artistes influents** :")
@@ -91,24 +90,24 @@ def main():
             password = st.text_input("Mot de passe", type='password')
 
             # Check if user exist in database
-            if st.button("Se connecter"):
+            if st.checkbox("Se connecter"):
                 # requête à modifier pour soumettre le nom et le mot de passe
                 r = requests.get(f'http://127.0.0.1:8000/user/?username={username}&password={password}')
 
                 if r.status_code == 403:
-                    st.write("Nom d'utilisateur non reconnu")
+                    st.warning("Nom d'utilisateur non reconnu")
                 else:
                     st.success("Bonjour {}".format(username))
                     placeholder = st.empty()
-                    placeholder.text_area("Saisissez votre commentaire :")
+                    review = st.text_area("Saisissez votre commentaire :")
 
-                    if st.button("Envoyer"):
+                    if st.checkbox("Envoyer"):
                         # ajouter le code pour l'insertion du commentaire dans la base et si ok :
-                        r = requests.post('http://127.0.0.1:8000/comments/')
-                        st.write(r.status_code)
-                        st.success("Votre commentaire a bien été enregistré")
-
-                        placeholder.empty()  # pour réinitialiser le champ commentaire
+                        r = requests.post(f'http://127.0.0.1:8000/comments/?username={username}',
+                                          data=json.dumps({"content": review}))
+                        if r.status_code == 200:
+                            st.success("Votre commentaire a bien été enregistré")
+                            placeholder.empty()  # pour réinitialiser le champ commentaire
 
         if task == "Je n'ai pas de compte":
             create = st.selectbox(" Voulez-vous créer un compte ? ", ["Oui", "Non"])
@@ -119,11 +118,23 @@ def main():
 
                 if st.button("S'inscrire"):
                     # /!\ Make json.dumps everytime otherwise you couldn't submit information to database
-                    requests.post('http://127.0.0.1:8000/user/',
-                                  data=json.dumps({"username": new_user, "password": new_password}))
+                    r = requests.post('http://127.0.0.1:8000/user/',
+                                      data=json.dumps({"username": new_user, "password": new_password}))
+                    if r.status_code == 200:
+                        st.success(
+                            "Votre compte a correctement été créé. Veuillez vous connecter pour laisser votre "
+                            "commentaire")
+                    else:
+                        st.warning("Erreur. Compte déjà existant !")
 
-                    st.success(
-                        "Votre compte a correctement été créé. Veuillez vous connecter pour laisser votre commentaire")
+    ####### ---- REVIEW ---- ######
+    st.subheader("Livre d'or")
+    r = requests.get(f'http://127.0.0.1:8000/comments')
+    data = r.json()
+    for dat in data:
+        st.write(dat['creation_date'])
+        st.write(dat['content'])
+        st.markdown('____')
 
 
 if __name__ == '__main__':
