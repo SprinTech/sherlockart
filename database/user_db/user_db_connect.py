@@ -1,7 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-import sys
 from database.db_utils import connect_to_mysql, create_db, connect_to_db
 
 from conf.conf_connect import user_database_name

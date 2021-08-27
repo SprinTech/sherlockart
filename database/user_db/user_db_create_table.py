@@ -3,7 +3,6 @@ import csv
 from database.user_db import user_db_models, user_db_connect
 from database.user_db.user_db_connect import db_connection, SessionLocal
 from database.user_db.user_db_models import User, Comment
-from numpy import genfromtxt
 from datetime import datetime
 
 
