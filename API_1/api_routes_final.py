@@ -56,7 +56,7 @@ def read_user(username: str, password: str, db: Session = Depends(get_db)):
 
 
 @app.post("/comments/")
-def create_comment(comment: schemas.CommentCreate, user_id: int, db : Session = Depends(get_db)):
+def create_comment(comment: schemas.CommentCreate, username: str, db: Session = Depends(get_db)):
     """
     Post a comment.
     Access: Only of the user who's connected
@@ -65,4 +65,14 @@ def create_comment(comment: schemas.CommentCreate, user_id: int, db : Session = 
 
     :return
     """
-    return crud.create_comment(db, comment, user_id)
+    user = crud.get_user_id(db, username)
+    return crud.create_comment(db, comment, user.id_user)
+
+
+@app.get("/comments/")
+def read_all_comment(db: Session = Depends(get_db)):
+    comments = crud.get_all_comment(db)
+    if len(comments) > 0:
+        return comments
+    else:
+        raise HTTPException(status_code=403, detail="no comments")
