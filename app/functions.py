@@ -47,6 +47,9 @@ def get_prediction(path):
 
 
 def upload_image():
+    """
+    Upload an image to streamlit app and save it to a fixed path. Do nothing while image is not uploaded
+    """
     try:
         uploaded_file = st.file_uploader("Choisissez un fichier", type=['png', 'jpg', 'jpeg'])
         st.image(uploaded_file, width=600)
@@ -58,6 +61,11 @@ def upload_image():
 
 
 def get_painting_information(path):
+    """
+    Predict artistic current from a painting and display some informations about the current
+
+    :param path (str) path of image to predict
+    """
     try:
         pred_current = get_prediction(path)
         st.write("- **Courant artistique** :", pred_current)
@@ -69,6 +77,9 @@ def get_painting_information(path):
 
 
 def login_to_account():
+    """
+    Login user if exists in database and add it's review to comment table
+    """
     username = st.text_input("Nom d'utilisateur")
     password = st.text_input("Mot de passe", type='password')
 
@@ -94,6 +105,9 @@ def login_to_account():
 
 
 def create_account():
+    """
+    Create account for a new user if username/password does not already exists
+    """
     new_user = st.text_input("Nom d'utilisateur")
     new_password = st.text_input("Mot de passe", type='password')
 
@@ -110,13 +124,13 @@ def create_account():
 
 
 def read_comments():
+    """
+    Display every comment about application posted by users
+    """
     r = requests.get(f'http://127.0.0.1:8000/comments')
+    comment_informations = r.json()
 
-    if r == None or r == '':
-        st.sidebar.write('No comments')
-    else:
-        comment_informations = r.json()
-        for comment_information in comment_informations:
-            st.sidebar.write(comment_information['creation_date'])
-            st.sidebar.write(comment_information['content'])
-            st.sidebar.markdown('____')
+    for comment_information in comment_informations:
+        st.sidebar.write(comment_information['creation_date'])
+        st.sidebar.write(comment_information['content'])
+        st.sidebar.markdown('____')
