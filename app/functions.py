@@ -26,7 +26,7 @@ def get_prediction(path):
     """
 
     # Load the model with keras
-    model = models.load_model('/api/models/my_model.h5')
+    model = models.load_model('api/models/my_model.h5')
 
     # We need labels
     labels = {0: 'Abstract Expressionism', 1: 'Baroque', 2: 'Byzantine Art', 3: 'Cubism', 4: 'Early Renaissance',
@@ -111,8 +111,12 @@ def create_account():
 
 def read_comments():
     r = requests.get(f'http://127.0.0.1:8000/comments')
-    data = r.json()
-    for dat in data:
-        st.sidebar.write(dat['creation_date'])
-        st.sidebar.write(dat['content'])
-        st.sidebar.markdown('____')
+
+    if r == None or r == '':
+        st.sidebar.write('No comments')
+    else:
+        comment_informations = r.json()
+        for comment_information in comment_informations:
+            st.sidebar.write(comment_information['creation_date'])
+            st.sidebar.write(comment_information['content'])
+            st.sidebar.markdown('____')

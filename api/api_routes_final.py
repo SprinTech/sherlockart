@@ -8,7 +8,7 @@ import schemas
 import crud
 from database.user_db.user_db_connect import SessionLocal
 from sqlalchemy.orm import Session
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException
 
 app = FastAPI()
 

@@ -15,8 +15,7 @@ sys.path.insert(0, parentdir)
 from api.api_routes_final import app, get_db
 from conf.conf_connect import mysql_user, mysql_password, user_database_name
 
-engine = create_engine('mysql+mysqlconnector://{0}:{1}@localhost/{2}'.format(mysql_user, mysql_password,
-                                                                             user_database_name))
+engine = create_engine('mysql+mysqlconnector://{0}:{1}@localhost/{2}'.format(mysql_user, mysql_password, user_database_name))
 
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
@@ -38,11 +37,10 @@ client = TestClient(app)
 
 
 def test_create_user():
-    response = client.post("/user/", json={"username": "François", "password": '1234'})
-    print(response)
+    response = client.post("/user/", json={"username": "Gérard", "password": '1234'})
     assert response.status_code == 200
     data = response.json()
-    assert data["username"] == "Jacques"
-    assert data["phone"] == "1234"
+    assert data["username"] == "Gérard"
+    assert data["password"] == "1234"
     assert "id_user" in data
     user_id = data['id_user']

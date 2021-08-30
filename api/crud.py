@@ -42,7 +42,7 @@ def get_comments_by_user_id(db: Session, user_id: int):
     return db.query(models.Comment).filter(models.Comment.user_id == user_id).all()
 
 
-def get_all_comment(db: Session, skip: int = 0, limit: int = 100):
+def get_all_comment(db: Session):
     """
     Get the list of all the comment in db
 
@@ -52,7 +52,7 @@ def get_all_comment(db: Session, skip: int = 0, limit: int = 100):
 
     :return: a list of comments
     """
-    return db.query(models.Comment).offset(skip).limit(limit).all()
+    return db.query(models.Comment).all()
 
 
 def get_user_id(db: Session, username: str):
