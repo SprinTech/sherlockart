@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 import sys
 
-sys.path.insert(0, 'API_1')
+sys.path.insert(0, 'api')
 
 from fastapi import Depends, HTTPException, status
 from fastapi import FastAPI

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 
 import sys
 
-sys.path.insert(0, 'API_1')
+sys.path.insert(0, 'api')
 
 import schemas
 import crud

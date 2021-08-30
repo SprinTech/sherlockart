@@ -26,7 +26,7 @@ def get_prediction(path):
     """
 
     # Load the model with keras
-    model = models.load_model('/home/apprenant/PycharmProjects/sherlockart/API_1/models/my_model.h5')
+    model = models.load_model('/api/models/my_model.h5')
 
     # We need labels
     labels = {0: 'Abstract Expressionism', 1: 'Baroque', 2: 'Byzantine Art', 3: 'Cubism', 4: 'Early Renaissance',

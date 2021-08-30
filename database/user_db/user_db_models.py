@@ -13,7 +13,7 @@ class User(Base):
 
     id_user = Column(Integer, primary_key=True, index=True)
     username = Column(String(20), unique=True, index=True)
-    hashed_password = Column(String(100))
+    password = Column(String(100))
     disabled = Column(Boolean, default=False)
     admin = Column(Boolean, default=False)
     creation_date = Column(DateTime, unique=False, default=datetime.utcnow(), index=True)

@@ -37,7 +37,7 @@ class User(UserBase):
 
 
 class UserInDB(User):
-    hashed_password: str
+    password: str
 
 
 class CommentBase(BaseModel):
