@@ -8,7 +8,7 @@ import schemas
 import crud
 from database.user_db.user_db_connect import SessionLocal
 from sqlalchemy.orm import Session
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException
 
 app = FastAPI()
 
@@ -61,9 +61,10 @@ def create_comment(comment: schemas.CommentCreate, username: str, db: Session = 
     Post a comment.
     Access: Only of the user who's connected
 
+    :param username (string)
     :param comment: user comment (string)
 
-    :return
+    :return informations about current comment
     """
     user = crud.get_user_id(db, username)
     return crud.create_comment(db, comment, user.id_user)
@@ -71,6 +72,11 @@ def create_comment(comment: schemas.CommentCreate, username: str, db: Session = 
 
 @app.get("/comments/")
 def read_all_comment(db: Session = Depends(get_db)):
+    """
+    Display all comments wrote by users
+
+    :return users comments
+    """
     comments = crud.get_all_comment(db)
     if len(comments) > 0:
         return comments

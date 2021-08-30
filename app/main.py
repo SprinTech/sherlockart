@@ -17,6 +17,7 @@ st.markdown('  ')
 if validate:
     get_painting_information('app/img/uploaded_image.png')
 
+
 # 3 - RECOMMANDATION
 st.subheader("3. On vous recommande :heavy_check_mark:")
 st.markdown('  ')

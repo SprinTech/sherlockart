@@ -93,6 +93,7 @@ def test_init_db():
 
 #     yield db_cursor
 
+    db_cursor.execute(populate_table)
 
 
 

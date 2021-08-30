@@ -24,16 +24,14 @@ def user_load_data(data_file_name):
     s = SessionLocal()
 
     try:
-        # print("liste:", list_data) 
         for i in list_data:
             # print(i)
             record = User(**{
                 'username': i[1],
-                'hashed_password': i[2],
+                'password': i[2],
                 'admin': True,
                 'creation_date': datetime.today()
             })
-            # print("record:", record)
             s.add(record)  # Add all the records
             s.commit()  # Attempt to commit all the records
     except:
