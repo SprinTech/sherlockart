@@ -3,7 +3,6 @@ from functions import upload_image, get_painting_information, login_to_account, 
 
 
 st.image("app/img/logo.png", width=600)
-
 # 1 - IMAGE UPLOADER
 st.subheader("1. Je télécharge une photo")
 st.markdown('  ')
@@ -17,13 +16,13 @@ st.markdown('  ')
 
 if validate:
     get_painting_information('app/img/uploaded_image.png')
-
+x
 # 3 - RECOMMANDATION
-st.subheader("3. On vous recommande :heavy_check_mark:")
-st.markdown('  ')
+# st.subheader("3. On vous recommande :heavy_check_mark:")
+# st.markdown('  ')
 
 # 4 - REVIEW
-st.subheader("4. Donner mon avis sur l'appli :star:")
+st.subheader("3. Donner mon avis sur l'appli :star:")
 st.markdown('  ')
 
 has_account = st.selectbox("Possédez-vous un compte ?", ["J'ai un compte", "Je n'ai pas de compte"])
