@@ -66,34 +66,6 @@ def test_init_db():
 
 
 
-# def session_make():
-#     db_connection = connect_to_db(test_database_name)
-#     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=db_connection)
-#     db = SessionLocal()
-#     yield db
-
-
-# @pytest.mark.asyncio
-# @pytest.fixture(scope='module')
-# def init_db(event_loop, session_make):
-#     mysql_connection = connect_to_mysql()
-#     db_cursor = create_db(mysql_connection, test_database_name)
-#     db_connection = connect_to_db(test_database_name)
-#     SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=db_connection)
-
-#     Base = declarative_base()
-#     models.Base.metadata.create_all(bind=db_connection)
-
-#     populate_table = """
-#     INSERT INTO user(name,hashed_password)
-#     VALUES("test","1234")
-#     """
-#     db_cursor.execute(populate_table)
-#     session_make.commit()
-
-#     yield db_cursor
-
-    db_cursor.execute(populate_table)
 
 
 
