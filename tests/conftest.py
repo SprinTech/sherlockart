@@ -11,10 +11,9 @@ print(parentdir)
 sys.path.insert(0, parentdir)
 
 from database.user_db import user_db_models as models
-from database.user_db.user_db_connect import connect_to_mysql, connect_to_db,create_db
+from database.user_db.user_db_connect import connect_to_mysql, connect_to_db, create_db
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from conf.conf_connect import mysql_user, mysql_host, mysql_password
 
 from api.api_routes_final import app, get_db
 
@@ -27,7 +26,6 @@ def event_loop():
     yield loop
     loop.close()
 
-test_database_name = "testdb"
 
 
 @pytest.mark.asyncio
@@ -41,9 +39,7 @@ def test_init_db():
 
     TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-    Base = declarative_base()
     models.Base.metadata.create_all(bind=engine)
-
 
     def override_get_db():
         """Activate testing session"""
@@ -53,19 +49,7 @@ def test_init_db():
         finally:
             db.close()
 
-
     app.dependency_overrides[get_db] = override_get_db
     client = TestClient(app)
 
-    yield client   
-
-
-
-
-
-
-
-
-
-
-
+    yield client

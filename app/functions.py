@@ -40,7 +40,7 @@ def get_prediction(path):
 
     # Get prediction
     prediction = model.predict(test_image)
-    prediction_probability = np.amax(prediction)
+    # prediction_probability = np.amax(prediction)
     prediction_idx = np.argmax(prediction)
 
     return labels[prediction_idx].replace('_', ' ')
@@ -67,11 +67,19 @@ def get_painting_information(path):
     :param path (str) path of image to predict
     """
     try:
-        pred_current = get_prediction(path)
-        st.write("- **Courant artistique** :", pred_current)
-        st.write("- **Description du courant** :")
-        st.write("- **Période historique** :")
-        st.write("- **Artistes influents** :")
+        current_period = "1770-1870"
+        current_description = """Romanticism replaced the Enlightenment and Classicism at the turn of the 19th 
+        century. Caspar David Friedrich was the main representative of Romanticism in Germany; Joseph Mallard William 
+        Turner was dedicated to this style of painting in England. The concept “romantic” became the symbol for 
+        everything intuitive and emotional; it stood in contrast to rational representation. George Stubbs, 
+        Carl Spitzweg and John Constable are the famous representatives of Romanticism."""
+        current_prediction = get_prediction(path)
+        current_artist = "Eugène Delacroix, Caspard David Friedrich, William Blake"
+
+        st.write("- **Courant artistique** :", current_prediction)
+        st.write("- **Description du courant** :", current_description)
+        st.write("- **Période historique** :", current_period)
+        st.write("- **Artistes influents** :", current_artist)
     except:
         pass
 
