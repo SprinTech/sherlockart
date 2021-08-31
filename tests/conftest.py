@@ -12,7 +12,6 @@ sys.path.insert(0, parentdir)
 
 from database.user_db import user_db_models as models
 from database.user_db.user_db_connect import connect_to_mysql, connect_to_db, create_db
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 from api.api_routes_final import app, get_db
@@ -25,7 +24,6 @@ def event_loop():
     loop = asyncio.get_event_loop()
     yield loop
     loop.close()
-
 
 
 @pytest.mark.asyncio
