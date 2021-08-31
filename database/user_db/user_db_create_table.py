@@ -17,7 +17,7 @@ def user_load_data(data_file_name):
         reader = csv.reader(f)
         next(reader)
         list_data = list(reader)
-        print("list_data", list_data)
+        #print("list_data", list_data)
 
     # Create the session
     SessionLocal.configure(bind=db_connection)
@@ -54,21 +54,23 @@ def comment_load_data(data_file_name):
     SessionLocal.configure(bind=db_connection)
     s = SessionLocal()
 
-    try:
-        # print("liste:", list_data) 
-        for i in list_data:
-            # print(i)
-            record = Comment(**{
-                'content': i[1],
-                'id_user': i[2],
-                'creation_date': datetime.today()
-            })
-            # print("record:", record)
-            s.add(record)  # Add all the records
-            s.commit()  # Attempt to commit all the records
-    except:
-        print("rollback")
-        s.rollback()  # Rollback the changes on error
-    finally:
-        print("close")
-        s.close()  # Close the connection
+
+# print("liste:", list_data) 
+    for i in list_data:
+        print(i)
+        record = Comment(**{
+            'content': i[1],
+            'id_user': i[2],
+            'creation_date': datetime.today()
+        })
+        # print("record:", record)
+        s.add(record)  # Add all the records
+        s.commit()  # Attempt to commit all the records
+    # try:
+        
+    # except:
+    #     print("rollback")
+    #     s.rollback()  # Rollback the changes on error
+    # finally:
+    #     print("close")
+    #     s.close()  # Close the connection
