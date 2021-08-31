@@ -93,7 +93,6 @@ def login_to_account():
 
     # Check if user exist in database
     if st.checkbox("Se connecter"):
-        # requête à modifier pour soumettre le nom et le mot de passe
         r = requests.get(f'http://127.0.0.1:8000/user/?username={username}&password={password}')
 
         if r.status_code == 403:
@@ -104,12 +103,11 @@ def login_to_account():
             review = st.text_area("Saisissez votre commentaire :")
 
             if st.checkbox("Envoyer"):
-                # ajouter le code pour l'insertion du commentaire dans la base et si ok :
                 r = requests.post(f'http://127.0.0.1:8000/comments/?username={username}',
                                   data=json.dumps({"content": review}))
                 if r.status_code == 200:
                     st.success("Votre commentaire a bien été enregistré")
-                    placeholder.empty()  # pour réinitialiser le champ commentaire
+                    placeholder.empty()
 
 
 def create_account():
@@ -135,10 +133,15 @@ def read_comments():
     """
     Display every comment about application posted by users
     """
-    r = requests.get(f'http://127.0.0.1:8000/comments')
-    comment_informations = r.json()
+    r = requests.get(f'http://127.0.0.1:8000/comments/')
 
-    for comment_information in comment_informations:
-        st.sidebar.write(comment_information['creation_date'])
-        st.sidebar.write(comment_information['content'])
-        st.sidebar.markdown('____')
+    try:
+        comment_informations = r.json()
+
+        for comment_information in comment_informations:
+            st.sidebar.write(comment_information['creation_date'])
+            st.sidebar.write(comment_information['content'])
+            st.sidebar.markdown('____')
+    except:
+        pass
+
