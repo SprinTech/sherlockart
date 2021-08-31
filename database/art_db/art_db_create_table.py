@@ -13,6 +13,9 @@ def art_db_init():
 
 # fill the artwork database 
 def artwork_load_data(data_file_name):
+    """
+    fill the db with csv file
+    """
     with open(data_file_name, newline='') as f:
         reader = csv.reader(f)
         next(reader)
@@ -59,6 +62,9 @@ def artwork_load_data(data_file_name):
 
 # fill the current database
 def current_load_data(data_file_name):
+    """
+    fill the db with csv file
+    """
     with open(data_file_name, newline='') as f:
         reader = csv.reader(f)
         next(reader)
