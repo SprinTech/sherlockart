@@ -1,6 +1,3 @@
-import sys
-sys.path.insert(0,'/home/apprenant/vscode_projects/sherlock-art')
-
 from database.db_utils import connect_to_mysql, create_db, connect_to_db
 from conf.conf_connect import art_database_name
 from sqlalchemy.ext.declarative import declarative_base

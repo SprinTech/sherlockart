@@ -1,9 +1,7 @@
 import mysql.connector
 from sqlalchemy import create_engine
-import sys
-sys.path.insert(0,'/home/apprenant/vscode_projects/sherlock-art')
 
-from conf.conf_connect import mysql_user, mysql_host, mysql_password,user_database_name
+from conf.conf_connect import mysql_user, mysql_host, mysql_password
 
 
 # METHODS TO ACCESS AND WORK WITH MYSQL
@@ -35,12 +33,13 @@ def create_db(mysql_connection, user_database_name):
     return cursor
 
 
-def connect_to_db(user_database_name):
+def connect_to_db(database_name):
     """
     connection to database
     :return: a connection object
     """
-    new_database_name = user_database_name
+    new_database_name = database_name
+    
     db_connection = create_engine(
         'mysql+mysqlconnector://{0}:{1}@localhost/{2}'.format(mysql_user, mysql_password, new_database_name))
     return db_connection

@@ -1,11 +1,6 @@
-import sys
-sys.path.insert(0,'/home/apprenant/vscode_projects/sherlock-art')
-
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, DateTime, Float, Enum, Text
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Text
 from sqlalchemy.orm import relationship
-from sqlalchemy.sql.sqltypes import DATE
 from database.art_db.art_db_connect import Base
-
 
 
 class Current(Base):
@@ -32,7 +27,7 @@ class Artwork(Base):
 
     name = Column(String(255), unique=False, index=True)
     url = Column(String(255), unique=False, index=True)
-    
+
     creation_date = Column(DateTime, unique=False, index=True)
     modification_date = Column(DateTime, unique=False, index=True)
     deleted_date = Column(DateTime, unique=False, index=True)
